@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DnD Item Shop</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #181818;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+body.transitions * {
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.table-section {
+  overflow-x: auto;
+}
+
+.sidebar {
+  background: #242424;
+  border-radius: 16px;
+  padding: 22px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 0 24px rgba(0,0,0,0.4);
+}
+
+.sidebar h2,
+h1 {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.5px;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.filter-group {
+  margin-bottom: 18px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  font-size: 15px;
+  background: #1d1d1d;
+  color: white;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.25);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-row input {
+  width: auto;
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+button {
+  background: #4f46e5;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #665dff;
+  transform: translateY(-1px);
+}
+
+.results-count {
+  margin-top: 15px;
+  opacity: 0.8;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #222;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.35);
+}
+
+th,
+td {
+  padding: 12px;
+
+  border-bottom: 1px solid #3f3f3f;
+  border-right: 1px solid #353535;
+
+  box-shadow:
+    inset -1px 0 3px rgba(0,0,0,0.28);
+
+  text-align: left;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+th {
+  background: #303030;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background: #3b3b3b;
+}
+
+.sort-arrow {
+  opacity: 0.8;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+tbody tr:nth-child(even) {
+  background: #242424;
+}
+
+tbody tr:nth-child(odd) {
+  background: #2c2c2c;
+}
+
+tr:hover {
+  background: #3a3a3a !important;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+  width: 320px;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 160px;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 270px;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+  width: 150px;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+  width: 140px;
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+  width: 140px;
+}
+
+th:nth-child(7),
+td:nth-child(7) {
+  width: 90px;
+}
+
+th:nth-child(8),
+td:nth-child(8) {
+  width: 140px;
+}
+
+.price {
+  color: gold;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.item-link {
+  color: #8ecbff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.item-link:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  margin-top: 20px;
+}
+
+.rarity {
+  font-weight: bold;
+}
+
+.rarity-common {
+  color: #cfcfcf;
+}
+
+.rarity-uncommon {
+  color: #57d657;
+}
+
+.rarity-rare {
+  color: #5ea0ff;
+}
+
+.rarity-very-rare {
+  color: #b46cff;
+}
+
+.rarity-legendary {
+  color: #ff9b42;
+}
+
+.rarity-artifact {
+  color: #ff4f4f;
+}
+
+.multi-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.multi-select button {
+  width: auto;
+  padding: 8px 12px;
+  background: #333;
+  border: 1px solid #555;
+}
+
+.multi-select button.active {
+  background: #4f46e5;
+  border-color: #7c74ff;
+}
+
+@media (max-width: 1100px) {
+
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    order: -1;
+  }
+
+}
+
+</style>
+</head>
+<body class="transitions">
+
+<div class="container">
+
+  <div class="table-section">
+
+    <h1>DnD Item Preisliste</h1>
+
+    <table>
+
+      <thead>
+        <tr>
+
+          <th class="sortable" data-sort="name">
+            Item <span class="sort-arrow">↕</span>
+          </th>
+
+          <th class="sortable" data-sort="type">
+            Type <span class="sort-arrow">↕</span>
+          </th>
+
+          <th class="sortable" data-sort="subtype">
+            Subtype <span class="sort-arrow">↕</span>
+          </th>
+
+          <th class="sortable" data-sort="rarity">
+            Rarity <span class="sort-arrow">↕</span>
+          </th>
+
+          <th>
+            Attunement
+          </th>
+
+          <th class="sortable" data-sort="price">
+            Preis <span class="sort-arrow">↕</span>
+          </th>
+
+          <th>
+            Zusatz
+          </th>
+
+          <th class="sortable" data-sort="priceRange">
+            Preisbereich <span class="sort-arrow">↕</span>
+          </th>
+
+        </tr>
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+
+    </table>
+
+    <div class="loading" id="loading">
+      Lade Daten aus Google Sheets...
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+
+    <h2>Suchfilter</h2>
+
+    <div class="filter-group">
+      <label>Type</label>
+      <div id="typeFilter" class="multi-select"></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Rarity</label>
+      <div id="rarityFilter" class="multi-select"></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Tier</label>
+      <select id="tierFilter">
+        <option value="Alle">Alle</option>
+        <option value="1">T1</option>
+        <option value="2">T2</option>
+        <option value="3">T3</option>
+        <option value="4">T4</option>
+        <option value="5">T5</option>
+        <option value="6">T6</option>
+        <option value="7">T7</option>
+        <option value="8">T8</option>
+        <option value="9">T9</option>
+        <option value="10">T10</option>
+        <option value="10+">T10+</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Attunement</label>
+      <select id="attuneFilter">
+        <option value="Alle">Alle</option>
+        <option value="Ja">Ja</option>
+        <option value="Nein">Nein</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Preis</label>
+
+      <div class="price-grid">
+        <input type="number" id="priceMin" placeholder="von">
+        <input type="number" id="priceMax" placeholder="bis">
+      </div>
+    </div>
+
+    <div class="filter-group checkbox-row">
+      <input type="checkbox" id="buyableFilter">
+      <label for="buyableFilter">kaufbar</label>
+    </div>
+
+    <div class="filter-group">
+      <label>Suchbegriff</label>
+      <input type="text" id="searchInput">
+    </div>
+
+    <div class="filter-group">
+      <button id="resetButton">
+        Filter zurücksetzen
+      </button>
+    </div>
+
+    <div class="results-count">
+      Suchergebnisse: <span id="resultCount">0</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+const SHEET_ID = "1yWXMERywTtgi-fKcmfTYgkSZ3abmnM0pNnZgYTfjToY";
+const SHEET_NAME = "Magic Items";
+
+const url =
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}`;
+
+let items = [];
+
+let selectedTypes = [];
+let selectedRarities = [];
+
+let currentSort = {
+  field: "name",
+  direction: "asc"
+};
+
+async function loadSheet() {
+
+  const response = await fetch(url);
+
+  const text = await response.text();
+
+  const json = JSON.parse(
+    text.substring(47).slice(0, -2)
+  );
+
+  const rows = json.table.rows;
+
+  items = rows.map(row => {
+
+    const cells = row.c || [];
+
+    return {
+
+      name: cells[0]?.v ?? "",
+      link: cells[1]?.v ?? "",
+      type: cells[2]?.v ?? "",
+      subtype: cells[3]?.v ?? "",
+      rarity: cells[4]?.v ?? "",
+      attunement: cells[5]?.v ?? "",
+      price: Number(cells[6]?.v ?? 0),
+      extra: cells[7]?.v ?? "",
+      priceRange: cells[8]?.v ?? ""
+
+    };
+
+  });
+
+  buildFilters();
+
+  filterItems();
+
+  document.getElementById("loading")
+    .style.display = "none";
+}
+
+function buildFilters() {
+
+  buildMultiSelect(
+    "typeFilter",
+    [...new Set(items.map(i => i.type))],
+    selectedTypes
+  );
+
+  buildMultiSelect(
+    "rarityFilter",
+    [...new Set(items.map(i => i.rarity))]
+      .filter(r => r !== "Varies"),
+    selectedRarities,
+    true
+  );
+
+}
+
+function buildMultiSelect(id, values, selectedArray, raritySort = false) {
+
+  const container = document.getElementById(id);
+
+  container.innerHTML = "";
+
+  values = values.filter(Boolean);
+
+  if (raritySort) {
+
+    values.sort((a, b) =>
+      getRarityRank(a) - getRarityRank(b)
+    );
+
+  } else {
+
+    values.sort();
+  }
+
+  values.forEach(value => {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+
+    button.textContent = value;
+
+    button.addEventListener("click", () => {
+
+      if (selectedArray.includes(value)) {
+
+        selectedArray.splice(
+          selectedArray.indexOf(value),
+          1
+        );
+
+        button.classList.remove("active");
+
+      } else {
+
+        selectedArray.push(value);
+
+        button.classList.add("active");
+      }
+
+      filterItems();
+
+    });
+
+    container.appendChild(button);
+
+  });
+
+}
+
+function getTier(priceRange) {
+
+  const text = String(priceRange);
+
+  if (text.startsWith("T10+"))
+    return 11;
+
+  const match = text.match(/^T(\d+)/i);
+
+  if (!match)
+    return 999;
+
+  return Number(match[1]);
+}
+
+function getRarityRank(rarity) {
+
+  const ranks = {
+
+    "Common": 1,
+    "Uncommon": 2,
+    "Rare": 3,
+    "Very Rare": 4,
+    "Legendary": 5,
+    "Artifact": 6,
+    "Unknown Rarity": 7
+
+  };
+
+  return ranks[rarity] || 999;
+}
+
+function getRarityClass(rarity) {
+
+  return String(rarity)
+    .toLowerCase()
+    .replace(/\s+/g, "-");
+}
+
+function updateSortArrows() {
+
+  document.querySelectorAll(".sortable")
+    .forEach(header => {
+
+      const arrow =
+        header.querySelector(".sort-arrow");
+
+      const field =
+        header.dataset.sort;
+
+      if (field !== currentSort.field) {
+
+        arrow.textContent = "↕";
+
+      } else {
+
+        arrow.textContent =
+          currentSort.direction === "asc"
+            ? "↑"
+            : "↓";
+      }
+
+    });
+
+}
+
+function filterItems() {
+
+  const tier =
+    document.getElementById("tierFilter").value;
+
+  const attune =
+    document.getElementById("attuneFilter").value;
+
+  const priceMin =
+    Number(document.getElementById("priceMin").value || 0);
+
+  const priceMaxRaw =
+    document.getElementById("priceMax").value;
+
+  const priceMax =
+    priceMaxRaw === ""
+      ? Infinity
+      : Number(priceMaxRaw);
+
+  const buyable =
+    document.getElementById("buyableFilter").checked;
+
+  const search =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  let filtered = items.filter(item => {
+
+    if (!item.price || item.price <= 0)
+      return false;
+
+    if (item.rarity === "Varies")
+      return false;
+
+    const itemTier = getTier(item.priceRange);
+
+    if (
+      selectedTypes.length &&
+      !selectedTypes.includes(item.type)
+    )
+      return false;
+
+    if (
+      selectedRarities.length &&
+      !selectedRarities.includes(item.rarity)
+    )
+      return false;
+
+    if (tier !== "Alle") {
+
+      const targetTier =
+        tier === "10+"
+          ? 11
+          : Number(tier);
+
+      if (itemTier !== targetTier)
+        return false;
+    }
+
+    if (attune === "Ja" && item.attunement === "")
+      return false;
+
+    if (attune === "Nein" && item.attunement !== "")
+      return false;
+
+    if (
+      buyable &&
+      !["Common", "Uncommon", "Rare"]
+        .includes(item.rarity)
+    )
+      return false;
+
+    if (item.price < priceMin)
+      return false;
+
+    if (item.price > priceMax)
+      return false;
+
+    const combinedSearch =
+      `${item.name} ${item.subtype}`
+      .toLowerCase();
+
+    if (
+      search &&
+      !combinedSearch.includes(search)
+    )
+      return false;
+
+    return true;
+
+  });
+
+  filtered.sort((a, b) => {
+
+    let valA = a[currentSort.field];
+    let valB = b[currentSort.field];
+
+    if (currentSort.field === "priceRange") {
+
+      valA = getTier(a.priceRange);
+      valB = getTier(b.priceRange);
+    }
+
+    if (currentSort.field === "rarity") {
+
+      valA = getRarityRank(a.rarity);
+      valB = getRarityRank(b.rarity);
+    }
+
+    if (typeof valA === "number") {
+
+      return currentSort.direction === "asc"
+        ? valA - valB
+        : valB - valA;
+    }
+
+    return currentSort.direction === "asc"
+      ? String(valA).localeCompare(String(valB))
+      : String(valB).localeCompare(String(valA));
+
+  });
+
+  updateSortArrows();
+
+  renderTable(filtered);
+
+  document.getElementById("resultCount")
+    .textContent = filtered.length;
+
+}
+
+function renderTable(data) {
+
+  const body = document.getElementById("tableBody");
+
+  body.innerHTML = "";
+
+  data.forEach(item => {
+
+    const tr = document.createElement("tr");
+
+    const rarityClass =
+      getRarityClass(item.rarity);
+
+    const itemName = item.link
+      ? `<a class="item-link" href="${item.link}" target="_blank">${item.name}</a>`
+      : item.name;
+
+    tr.innerHTML = `
+      <td title="${item.name}">${itemName}</td>
+      <td title="${item.type}">${item.type}</td>
+      <td title="${item.subtype}">${item.subtype}</td>
+      <td class="rarity rarity-${rarityClass}">
+        ${item.rarity}
+      </td>
+      <td>${item.attunement}</td>
+      <td class="price">${item.price} GP</td>
+      <td title="${item.extra}">${item.extra}</td>
+      <td>${item.priceRange}</td>
+    `;
+
+    body.appendChild(tr);
+
+  });
+
+}
+
+function resetFilters() {
+
+  selectedTypes = [];
+  selectedRarities = [];
+
+  document.getElementById("tierFilter").value = "Alle";
+  document.getElementById("attuneFilter").value = "Alle";
+
+  document.getElementById("priceMin").value = "";
+  document.getElementById("priceMax").value = "";
+
+  document.getElementById("buyableFilter").checked = false;
+
+  document.getElementById("searchInput").value = "";
+
+  currentSort.field = "name";
+  currentSort.direction = "asc";
+
+  buildFilters();
+
+  filterItems();
+
+}
+
+[
+  "tierFilter",
+  "attuneFilter",
+  "priceMin",
+  "priceMax",
+  "buyableFilter"
+]
+.forEach(id => {
+
+  document
+    .getElementById(id)
+    .addEventListener("input", filterItems);
+
+  document
+    .getElementById(id)
+    .addEventListener("change", filterItems);
+
+});
+
+document
+  .getElementById("searchInput")
+  .addEventListener("input", filterItems);
+
+document
+  .getElementById("resetButton")
+  .addEventListener("click", resetFilters);
+
+document
+  .querySelectorAll(".sortable")
+  .forEach(header => {
+
+    header.addEventListener("click", () => {
+
+      const field = header.dataset.sort;
+
+      if (currentSort.field === field) {
+
+        currentSort.direction =
+          currentSort.direction === "asc"
+            ? "desc"
+            : "asc";
+
+      } else {
+
+        currentSort.field = field;
+        currentSort.direction = "asc";
+      }
+
+      filterItems();
+
+    });
+
+  });
+
+loadSheet();
+
+</script>
+
+</body>
+</html>
