@@ -41,6 +41,10 @@ body *{
   padding:20px;
 }
 
+.container.sidebar-hidden{
+  grid-template-columns:1fr;
+}
+
 .table-section{
   overflow-x:auto;
 }
@@ -56,9 +60,30 @@ body *{
   box-shadow:0 0 24px rgba(0,0,0,0.4);
 }
 
+.sidebar.hidden{
+  display:none;
+}
+
 .sidebar h2,
 h1{
   font-family:"Cinzel",serif;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+}
+
+.toggle-sidebar{
+  width:auto;
+  padding:10px 14px;
+  background:#333;
+  border:1px solid #555;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
 .filter-group{
@@ -121,6 +146,7 @@ td{
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+  position:relative;
 }
 
 th:last-child,
@@ -146,7 +172,7 @@ tr:hover{
 
 th:nth-child(1),
 td:nth-child(1){
-  width:440px;
+  width:500px;
 }
 
 th:nth-child(2),
@@ -176,7 +202,7 @@ td:nth-child(6){
 
 th:nth-child(7),
 td:nth-child(7){
-  width:55px;
+  width:65px;
 }
 
 .price{
@@ -198,6 +224,41 @@ td:nth-child(7){
 
 .item-link:hover{
   text-decoration:underline;
+}
+
+.hover-full{
+  position:absolute;
+  left:10px;
+  top:100%;
+  z-index:50;
+
+  background:#111;
+  color:white;
+
+  padding:8px 10px;
+  border-radius:8px;
+
+  border:1px solid #555;
+
+  white-space:normal;
+  max-width:500px;
+
+  opacity:0;
+  pointer-events:none;
+
+  transform:translateY(4px);
+
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.45);
+}
+
+td:hover .hover-full{
+  opacity:1;
+  transform:translateY(0);
 }
 
 .rarity-common{
@@ -256,7 +317,6 @@ td:nth-child(7){
 
   .sidebar{
     position:static;
-    order:-1;
   }
 
 }
@@ -265,11 +325,22 @@ td:nth-child(7){
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="mainContainer">
 
 <div class="table-section">
 
+<div class="topbar">
+
 <h1>DnD Item Preisliste</h1>
+
+<button
+class="toggle-sidebar"
+id="toggleSidebar"
+>
+☰ Filter
+</button>
+
+</div>
 
 <table>
 
@@ -293,7 +364,7 @@ Rarity ↕
 </th>
 
 <th>
-Attunement
+Attune
 </th>
 
 <th class="sortable" data-sort="price">
@@ -301,7 +372,7 @@ Preis ↕
 </th>
 
 <th>
-Zusatz
+Extra
 </th>
 
 </tr>
@@ -313,7 +384,7 @@ Zusatz
 
 </div>
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
 <h2>Suchfilter</h2>
 
@@ -656,7 +727,15 @@ function renderTable(data){
       getRarityClass(item.rarity);
 
     const itemName = item.link
-      ? `<a class="item-link" href="${item.link}" target="_blank">${item.name}</a>`
+      ? `
+      <a class="item-link" href="${item.link}" target="_blank">
+        ${item.name}
+      </a>
+
+      <div class="hover-full">
+        ${item.name}
+      </div>
+      `
       : item.name;
 
     const hiddenPriceRarities = [
@@ -768,6 +847,20 @@ document
       filterItems();
 
     });
+
+  });
+
+document
+  .getElementById("toggleSidebar")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("sidebar")
+      .classList.toggle("hidden");
+
+    document
+      .getElementById("mainContainer")
+      .classList.toggle("sidebar-hidden");
 
   });
 
