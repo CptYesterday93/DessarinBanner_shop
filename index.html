@@ -1,9 +1,11 @@
+<meta name="robots" content="noindex">
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DnD Item Shop</title>
+<title>DnD Item Shop – Spieler</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,11 +59,6 @@ body.transitions * {
 .sidebar h2,
 h1 {
   font-family: "Cinzel", serif;
-  letter-spacing: 0.5px;
-}
-
-.sidebar h2 {
-  margin-top: 0;
 }
 
 .filter-group {
@@ -86,23 +83,6 @@ button {
   color: white;
 }
 
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99,102,241,0.25);
-}
-
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.checkbox-row input {
-  width: auto;
-}
-
 .price-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -118,16 +98,6 @@ button {
 
 button:hover {
   background: #665dff;
-  transform: translateY(-1px);
-}
-
-.results-count {
-  margin-top: 15px;
-  opacity: 0.8;
-}
-
-h1 {
-  margin-top: 0;
 }
 
 table {
@@ -137,21 +107,15 @@ table {
   background: #222;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.35);
 }
 
 th,
 td {
   padding: 12px;
-
   border-bottom: 1px solid #3f3f3f;
   border-right: 1px solid #353535;
-
-  box-shadow:
-    inset -1px 0 3px rgba(0,0,0,0.28);
-
+  box-shadow: inset -1px 0 3px rgba(0,0,0,0.28);
   text-align: left;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -164,24 +128,6 @@ td:last-child {
 
 th {
   background: #303030;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-
-.sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-.sortable:hover {
-  background: #3b3b3b;
-}
-
-.sort-arrow {
-  opacity: 0.8;
-  font-size: 12px;
-  margin-left: 6px;
 }
 
 tbody tr:nth-child(even) {
@@ -198,7 +144,7 @@ tr:hover {
 
 th:nth-child(1),
 td:nth-child(1) {
-  width: 320px;
+  width: 440px;
 }
 
 th:nth-child(2),
@@ -218,28 +164,22 @@ td:nth-child(4) {
 
 th:nth-child(5),
 td:nth-child(5) {
-  width: 140px;
+  width: 90px;
 }
 
 th:nth-child(6),
 td:nth-child(6) {
-  width: 140px;
+  width: 160px;
 }
 
 th:nth-child(7),
 td:nth-child(7) {
-  width: 90px;
-}
-
-th:nth-child(8),
-td:nth-child(8) {
-  width: 140px;
+  width: 55px;
 }
 
 .price {
   color: gold;
   font-weight: bold;
-  white-space: nowrap;
 }
 
 .item-link {
@@ -252,36 +192,34 @@ td:nth-child(8) {
   text-decoration: underline;
 }
 
-.loading {
-  margin-top: 20px;
-}
-
-.rarity {
-  font-weight: bold;
-}
-
 .rarity-common {
   color: #cfcfcf;
+  font-weight: bold;
 }
 
 .rarity-uncommon {
   color: #57d657;
+  font-weight: bold;
 }
 
 .rarity-rare {
   color: #5ea0ff;
+  font-weight: bold;
 }
 
 .rarity-very-rare {
   color: #b46cff;
+  font-weight: bold;
 }
 
 .rarity-legendary {
   color: #ff9b42;
+  font-weight: bold;
 }
 
 .rarity-artifact {
   color: #ff4f4f;
+  font-weight: bold;
 }
 
 .multi-select {
@@ -321,131 +259,102 @@ td:nth-child(8) {
 
 <div class="container">
 
-  <div class="table-section">
+<div class="table-section">
 
-    <h1>DnD Item Preisliste</h1>
+<h1>DnD Item Preisliste</h1>
 
-    <table>
+<table>
 
-      <thead>
-        <tr>
+<thead>
+<tr>
 
-          <th class="sortable" data-sort="name">
-            Item <span class="sort-arrow">↕</span>
-          </th>
+<th class="sortable" data-sort="name">
+Item ↕
+</th>
 
-          <th class="sortable" data-sort="type">
-            Type <span class="sort-arrow">↕</span>
-          </th>
+<th class="sortable" data-sort="type">
+Type ↕
+</th>
 
-          <th class="sortable" data-sort="subtype">
-            Subtype <span class="sort-arrow">↕</span>
-          </th>
+<th class="sortable" data-sort="subtype">
+Subtype ↕
+</th>
 
-          <th class="sortable" data-sort="rarity">
-            Rarity <span class="sort-arrow">↕</span>
-          </th>
+<th class="sortable" data-sort="rarity">
+Rarity ↕
+</th>
 
-          <th>
-            Attunement
-          </th>
+<th>
+Attunement
+</th>
 
-          <th class="sortable" data-sort="price">
-            Preis <span class="sort-arrow">↕</span>
-          </th>
+<th class="sortable" data-sort="price">
+Preis ↕
+</th>
 
-          <th>
-            Zusatz
-          </th>
+<th>
+Zusatz
+</th>
 
-          <th class="sortable" data-sort="priceRange">
-            Preisbereich <span class="sort-arrow">↕</span>
-          </th>
+</tr>
+</thead>
 
-        </tr>
-      </thead>
+<tbody id="tableBody"></tbody>
 
-      <tbody id="tableBody"></tbody>
+</table>
 
-    </table>
+</div>
 
-    <div class="loading" id="loading">
-      Lade Daten aus Google Sheets...
-    </div>
+<div class="sidebar">
 
-  </div>
+<h2>Suchfilter</h2>
 
-  <div class="sidebar">
+<div class="filter-group">
+<label>Type</label>
+<div id="typeFilter" class="multi-select"></div>
+</div>
 
-    <h2>Suchfilter</h2>
+<div class="filter-group">
+<label>Rarity</label>
+<div id="rarityFilter" class="multi-select"></div>
+</div>
 
-    <div class="filter-group">
-      <label>Type</label>
-      <div id="typeFilter" class="multi-select"></div>
-    </div>
+<div class="filter-group">
+<label>Attunement</label>
 
-    <div class="filter-group">
-      <label>Rarity</label>
-      <div id="rarityFilter" class="multi-select"></div>
-    </div>
+<select id="attuneFilter">
+<option value="Alle">Alle</option>
+<option value="Ja">Ja</option>
+<option value="Nein">Nein</option>
+</select>
+</div>
 
-    <div class="filter-group">
-      <label>Tier</label>
-      <select id="tierFilter">
-        <option value="Alle">Alle</option>
-        <option value="1">T1</option>
-        <option value="2">T2</option>
-        <option value="3">T3</option>
-        <option value="4">T4</option>
-        <option value="5">T5</option>
-        <option value="6">T6</option>
-        <option value="7">T7</option>
-        <option value="8">T8</option>
-        <option value="9">T9</option>
-        <option value="10">T10</option>
-        <option value="10+">T10+</option>
-      </select>
-    </div>
+<div class="filter-group">
+<label>Preis</label>
 
-    <div class="filter-group">
-      <label>Attunement</label>
-      <select id="attuneFilter">
-        <option value="Alle">Alle</option>
-        <option value="Ja">Ja</option>
-        <option value="Nein">Nein</option>
-      </select>
-    </div>
+<div class="price-grid">
+<input type="number" id="priceMin" placeholder="von">
+<input type="number" id="priceMax" placeholder="bis">
+</div>
+</div>
 
-    <div class="filter-group">
-      <label>Preis</label>
+<div class="filter-group">
+<label>Suchbegriff</label>
+<input type="text" id="searchInput">
+</div>
 
-      <div class="price-grid">
-        <input type="number" id="priceMin" placeholder="von">
-        <input type="number" id="priceMax" placeholder="bis">
-      </div>
-    </div>
+<div class="filter-group">
+<button id="resetButton">
+Filter zurücksetzen
+</button>
+</div>
 
-    <div class="filter-group checkbox-row">
-      <input type="checkbox" id="buyableFilter">
-      <label for="buyableFilter">kaufbar</label>
-    </div>
+<div>
+Suchergebnisse:
+<span id="resultCount">0</span>
+</div>
 
-    <div class="filter-group">
-      <label>Suchbegriff</label>
-      <input type="text" id="searchInput">
-    </div>
-
-    <div class="filter-group">
-      <button id="resetButton">
-        Filter zurücksetzen
-      </button>
-    </div>
-
-    <div class="results-count">
-      Suchergebnisse: <span id="resultCount">0</span>
-    </div>
-
-  </div>
+</div>
 
 </div>
 
@@ -455,7 +364,7 @@ const SHEET_ID = "1yWXMERywTtgi-fKcmfTYgkSZ3abmnM0pNnZgYTfjToY";
 const SHEET_NAME = "Magic Items";
 
 const url =
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}`;
+`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}`;
 
 let items = [];
 
@@ -463,434 +372,367 @@ let selectedTypes = [];
 let selectedRarities = [];
 
 let currentSort = {
-  field: "name",
-  direction: "asc"
+field: "name",
+direction: "asc"
 };
 
 async function loadSheet() {
 
-  const response = await fetch(url);
+const response = await fetch(url);
 
-  const text = await response.text();
+const text = await response.text();
 
-  const json = JSON.parse(
-    text.substring(47).slice(0, -2)
-  );
+const json = JSON.parse(
+text.substring(47).slice(0, -2)
+);
 
-  const rows = json.table.rows;
+const rows = json.table.rows;
 
-  items = rows.map(row => {
+items = rows.map(row => {
 
-    const cells = row.c || [];
+const cells = row.c || [];
 
-    return {
+return {
 
-      name: cells[0]?.v ?? "",
-      link: cells[1]?.v ?? "",
-      type: cells[2]?.v ?? "",
-      subtype: cells[3]?.v ?? "",
-      rarity: cells[4]?.v ?? "",
-      attunement: cells[5]?.v ?? "",
-      price: Number(cells[6]?.v ?? 0),
-      extra: cells[7]?.v ?? "",
-      priceRange: cells[8]?.v ?? ""
+name: cells[0]?.v ?? "",
+link: cells[1]?.v ?? "",
+type: cells[2]?.v ?? "",
+subtype: cells[3]?.v ?? "",
+rarity: cells[4]?.v ?? "",
+attunement: cells[5]?.v ?? "",
+price: Number(cells[6]?.v ?? 0),
+extra: cells[7]?.v ?? ""
 
-    };
+};
 
-  });
+});
 
-  buildFilters();
+buildFilters();
 
-  filterItems();
+filterItems();
 
-  document.getElementById("loading")
-    .style.display = "none";
 }
 
 function buildFilters() {
 
-  buildMultiSelect(
-    "typeFilter",
-    [...new Set(items.map(i => i.type))],
-    selectedTypes
-  );
+buildMultiSelect(
+"typeFilter",
+[...new Set(items.map(i => i.type))],
+selectedTypes
+);
 
-  buildMultiSelect(
-    "rarityFilter",
-    [...new Set(items.map(i => i.rarity))]
-      .filter(r => r !== "Varies"),
-    selectedRarities,
-    true
-  );
+buildMultiSelect(
+"rarityFilter",
+[...new Set(items.map(i => i.rarity))]
+.filter(r => r !== "Varies"),
+selectedRarities,
+true
+);
 
 }
 
 function buildMultiSelect(id, values, selectedArray, raritySort = false) {
 
-  const container = document.getElementById(id);
+const container = document.getElementById(id);
 
-  container.innerHTML = "";
+container.innerHTML = "";
 
-  values = values.filter(Boolean);
+values = values.filter(Boolean);
 
-  if (raritySort) {
+if (raritySort) {
 
-    values.sort((a, b) =>
-      getRarityRank(a) - getRarityRank(b)
-    );
+values.sort((a, b) =>
+getRarityRank(a) - getRarityRank(b)
+);
 
-  } else {
+} else {
 
-    values.sort();
-  }
-
-  values.forEach(value => {
-
-    const button = document.createElement("button");
-
-    button.type = "button";
-
-    button.textContent = value;
-
-    button.addEventListener("click", () => {
-
-      if (selectedArray.includes(value)) {
-
-        selectedArray.splice(
-          selectedArray.indexOf(value),
-          1
-        );
-
-        button.classList.remove("active");
-
-      } else {
-
-        selectedArray.push(value);
-
-        button.classList.add("active");
-      }
-
-      filterItems();
-
-    });
-
-    container.appendChild(button);
-
-  });
-
+values.sort();
 }
 
-function getTier(priceRange) {
+values.forEach(value => {
 
-  const text = String(priceRange);
+const button = document.createElement("button");
 
-  if (text.startsWith("T10+"))
-    return 11;
+button.type = "button";
 
-  const match = text.match(/^T(\d+)/i);
+button.textContent = value;
 
-  if (!match)
-    return 999;
+button.addEventListener("click", () => {
 
-  return Number(match[1]);
+if (selectedArray.includes(value)) {
+
+selectedArray.splice(
+selectedArray.indexOf(value),
+1
+);
+
+button.classList.remove("active");
+
+} else {
+
+selectedArray.push(value);
+
+button.classList.add("active");
+}
+
+filterItems();
+
+});
+
+container.appendChild(button);
+
+});
+
 }
 
 function getRarityRank(rarity) {
 
-  const ranks = {
+const ranks = {
 
-    "Common": 1,
-    "Uncommon": 2,
-    "Rare": 3,
-    "Very Rare": 4,
-    "Legendary": 5,
-    "Artifact": 6,
-    "Unknown Rarity": 7
+"Common": 1,
+"Uncommon": 2,
+"Rare": 3,
+"Very Rare": 4,
+"Legendary": 5,
+"Artifact": 6,
+"Unknown Rarity": 7
 
-  };
+};
 
-  return ranks[rarity] || 999;
+return ranks[rarity] || 999;
 }
 
 function getRarityClass(rarity) {
 
-  return String(rarity)
-    .toLowerCase()
-    .replace(/\s+/g, "-");
-}
-
-function updateSortArrows() {
-
-  document.querySelectorAll(".sortable")
-    .forEach(header => {
-
-      const arrow =
-        header.querySelector(".sort-arrow");
-
-      const field =
-        header.dataset.sort;
-
-      if (field !== currentSort.field) {
-
-        arrow.textContent = "↕";
-
-      } else {
-
-        arrow.textContent =
-          currentSort.direction === "asc"
-            ? "↑"
-            : "↓";
-      }
-
-    });
-
+return String(rarity)
+.toLowerCase()
+.replace(/\s+/g, "-");
 }
 
 function filterItems() {
 
-  const tier =
-    document.getElementById("tierFilter").value;
+const attune =
+document.getElementById("attuneFilter").value;
 
-  const attune =
-    document.getElementById("attuneFilter").value;
+const priceMin =
+Number(document.getElementById("priceMin").value || 0);
 
-  const priceMin =
-    Number(document.getElementById("priceMin").value || 0);
+const priceMaxRaw =
+document.getElementById("priceMax").value;
 
-  const priceMaxRaw =
-    document.getElementById("priceMax").value;
+const priceMax =
+priceMaxRaw === ""
+? Infinity
+: Number(priceMaxRaw);
 
-  const priceMax =
-    priceMaxRaw === ""
-      ? Infinity
-      : Number(priceMaxRaw);
+const search =
+document.getElementById("searchInput")
+.value
+.toLowerCase();
 
-  const buyable =
-    document.getElementById("buyableFilter").checked;
+let filtered = items.filter(item => {
 
-  const search =
-    document.getElementById("searchInput")
-    .value
-    .toLowerCase();
+if (!item.price || item.price <= 0)
+return false;
 
-  let filtered = items.filter(item => {
+if (item.rarity === "Varies")
+return false;
 
-    if (!item.price || item.price <= 0)
-      return false;
+if (
+selectedTypes.length &&
+!selectedTypes.includes(item.type)
+)
+return false;
 
-    if (item.rarity === "Varies")
-      return false;
+if (
+selectedRarities.length &&
+!selectedRarities.includes(item.rarity)
+)
+return false;
 
-    const itemTier = getTier(item.priceRange);
+if (attune === "Ja" && item.attunement === "")
+return false;
 
-    if (
-      selectedTypes.length &&
-      !selectedTypes.includes(item.type)
-    )
-      return false;
+if (attune === "Nein" && item.attunement !== "")
+return false;
 
-    if (
-      selectedRarities.length &&
-      !selectedRarities.includes(item.rarity)
-    )
-      return false;
+if (item.price < priceMin)
+return false;
 
-    if (tier !== "Alle") {
+if (item.price > priceMax)
+return false;
 
-      const targetTier =
-        tier === "10+"
-          ? 11
-          : Number(tier);
+const combinedSearch =
+`${item.name} ${item.subtype}`
+.toLowerCase();
 
-      if (itemTier !== targetTier)
-        return false;
-    }
+if (
+search &&
+!combinedSearch.includes(search)
+)
+return false;
 
-    if (attune === "Ja" && item.attunement === "")
-      return false;
+return true;
 
-    if (attune === "Nein" && item.attunement !== "")
-      return false;
+});
 
-    if (
-      buyable &&
-      !["Common", "Uncommon", "Rare"]
-        .includes(item.rarity)
-    )
-      return false;
+filtered.sort((a, b) => {
 
-    if (item.price < priceMin)
-      return false;
+let valA = a[currentSort.field];
+let valB = b[currentSort.field];
 
-    if (item.price > priceMax)
-      return false;
+if (currentSort.field === "rarity") {
 
-    const combinedSearch =
-      `${item.name} ${item.subtype}`
-      .toLowerCase();
+valA = getRarityRank(a.rarity);
+valB = getRarityRank(b.rarity);
+}
 
-    if (
-      search &&
-      !combinedSearch.includes(search)
-    )
-      return false;
+if (typeof valA === "number") {
 
-    return true;
+return currentSort.direction === "asc"
+? valA - valB
+: valB - valA;
+}
 
-  });
+return currentSort.direction === "asc"
+? String(valA).localeCompare(String(valB))
+: String(valB).localeCompare(String(valA));
 
-  filtered.sort((a, b) => {
+});
 
-    let valA = a[currentSort.field];
-    let valB = b[currentSort.field];
+renderTable(filtered);
 
-    if (currentSort.field === "priceRange") {
-
-      valA = getTier(a.priceRange);
-      valB = getTier(b.priceRange);
-    }
-
-    if (currentSort.field === "rarity") {
-
-      valA = getRarityRank(a.rarity);
-      valB = getRarityRank(b.rarity);
-    }
-
-    if (typeof valA === "number") {
-
-      return currentSort.direction === "asc"
-        ? valA - valB
-        : valB - valA;
-    }
-
-    return currentSort.direction === "asc"
-      ? String(valA).localeCompare(String(valB))
-      : String(valB).localeCompare(String(valA));
-
-  });
-
-  updateSortArrows();
-
-  renderTable(filtered);
-
-  document.getElementById("resultCount")
-    .textContent = filtered.length;
+document.getElementById("resultCount")
+.textContent = filtered.length;
 
 }
 
 function renderTable(data) {
 
-  const body = document.getElementById("tableBody");
+const body = document.getElementById("tableBody");
 
-  body.innerHTML = "";
+body.innerHTML = "";
 
-  data.forEach(item => {
+data.forEach(item => {
 
-    const tr = document.createElement("tr");
+const tr = document.createElement("tr");
 
-    const rarityClass =
-      getRarityClass(item.rarity);
+const rarityClass =
+getRarityClass(item.rarity);
 
-    const itemName = item.link
-      ? `<a class="item-link" href="${item.link}" target="_blank">${item.name}</a>`
-      : item.name;
+const itemName = item.link
+? `<a class="item-link" href="${item.link}" target="_blank">${item.name}</a>`
+: item.name;
 
-    tr.innerHTML = `
-      <td title="${item.name}">${itemName}</td>
-      <td title="${item.type}">${item.type}</td>
-      <td title="${item.subtype}">${item.subtype}</td>
-      <td class="rarity rarity-${rarityClass}">
-        ${item.rarity}
-      </td>
-      <td>${item.attunement}</td>
-      <td class="price">${item.price} GP</td>
-      <td title="${item.extra}">${item.extra}</td>
-      <td>${item.priceRange}</td>
-    `;
+const hiddenPriceRarities = [
+"Very Rare",
+"Legendary",
+"Artifact",
+"Unknown Rarity"
+];
 
-    body.appendChild(tr);
+const priceDisplay =
+hiddenPriceRarities.includes(item.rarity)
+? "Nicht kaufbar"
+: `${item.price} GP`;
 
-  });
+tr.innerHTML = `
+<td>${itemName}</td>
+<td>${item.type}</td>
+<td>${item.subtype}</td>
+
+<td class="rarity-${rarityClass}">
+${item.rarity}
+</td>
+
+<td>${item.attunement}</td>
+
+<td class="price">
+${priceDisplay}
+</td>
+
+<td>${item.extra}</td>
+`;
+
+body.appendChild(tr);
+
+});
 
 }
 
 function resetFilters() {
 
-  selectedTypes = [];
-  selectedRarities = [];
+selectedTypes = [];
+selectedRarities = [];
 
-  document.getElementById("tierFilter").value = "Alle";
-  document.getElementById("attuneFilter").value = "Alle";
+document.getElementById("attuneFilter").value = "Alle";
 
-  document.getElementById("priceMin").value = "";
-  document.getElementById("priceMax").value = "";
+document.getElementById("priceMin").value = "";
+document.getElementById("priceMax").value = "";
 
-  document.getElementById("buyableFilter").checked = false;
+document.getElementById("searchInput").value = "";
 
-  document.getElementById("searchInput").value = "";
+currentSort.field = "name";
+currentSort.direction = "asc";
 
-  currentSort.field = "name";
-  currentSort.direction = "asc";
+buildFilters();
 
-  buildFilters();
-
-  filterItems();
+filterItems();
 
 }
 
 [
-  "tierFilter",
-  "attuneFilter",
-  "priceMin",
-  "priceMax",
-  "buyableFilter"
+"attuneFilter",
+"priceMin",
+"priceMax"
 ]
 .forEach(id => {
 
-  document
-    .getElementById(id)
-    .addEventListener("input", filterItems);
+document
+.getElementById(id)
+.addEventListener("input", filterItems);
 
-  document
-    .getElementById(id)
-    .addEventListener("change", filterItems);
+document
+.getElementById(id)
+.addEventListener("change", filterItems);
 
 });
 
 document
-  .getElementById("searchInput")
-  .addEventListener("input", filterItems);
+.getElementById("searchInput")
+.addEventListener("input", filterItems);
 
 document
-  .getElementById("resetButton")
-  .addEventListener("click", resetFilters);
+.getElementById("resetButton")
+.addEventListener("click", resetFilters);
 
 document
-  .querySelectorAll(".sortable")
-  .forEach(header => {
+.querySelectorAll(".sortable")
+.forEach(header => {
 
-    header.addEventListener("click", () => {
+header.addEventListener("click", () => {
 
-      const field = header.dataset.sort;
+const field = header.dataset.sort;
 
-      if (currentSort.field === field) {
+if (currentSort.field === field) {
 
-        currentSort.direction =
-          currentSort.direction === "asc"
-            ? "desc"
-            : "asc";
+currentSort.direction =
+currentSort.direction === "asc"
+? "desc"
+: "asc";
 
-      } else {
+} else {
 
-        currentSort.field = field;
-        currentSort.direction = "asc";
-      }
+currentSort.field = field;
+currentSort.direction = "asc";
+}
 
-      filterItems();
+filterItems();
 
-    });
+});
 
-  });
+});
 
 loadSheet();
 
